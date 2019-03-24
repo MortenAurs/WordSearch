@@ -1,40 +1,42 @@
 #! python3
 # Opens all files inside a folder and searches for any line that matches an input from user
 
-import os
+import os, sys
 
 
-print('Write the path to the directory:')
-path = input()
-
-print('Type in the string you want to search for:')
-search = input()
-
-
-def readfile(file, filename):
+def readfile(file, filename, exists):
     output = ''
-    while file.readline():
-        line = file.readline().strip()
-        if search.upper() in line.upper():
-
-            output += '     ' + line + '\n'
-    output = output.rstrip()
+    try:
+        for line in file:
+            if search in line:
+                exists = True
+                output += '     ' + line.strip() + '\n'
+        output = output.rstrip()
+    except:
+        pass
     if output != '':
-        print('Directory: ' + filename)
-        print(output.replace(search.lower(), '\033[1m ' + search + '\033[0m'))
+        print('\033[94m Directory: ' + filename+ '\033[0m')
+        print(output.replace(search, '\033[1m ' + search + '\033[0m'))
+    return exists
 
 
-for subdir, dirs, files in os.walk(path):
-    for file in files:
-        fullfilename = subdir + os.sep + file
-        fileread = open(fullfilename, 'r')
-        if not fullfilename.endswith('.jpg') and not fullfilename.endswith('.pdf'):
-            readfile(fileread, fullfilename)
+if len(sys.argv) > 3:
+    print('Too many arguments. "[filename.py] [search string] [path]"')
+elif len(sys.argv) < 3:
+    print('Too few arguments. "[filename.py] [search string] [path]"')
+else:
+    search = sys.argv[1]
+    path = sys.argv[2]
+    exists = False
+    for subdir, dirs, files in os.walk(path):
+        for file in files:
+            fullfilename = subdir + os.sep + file
+            try:
+                fileread = open(fullfilename, 'r')
+            except:
+                pass
+            exists = readfile(fileread, fullfilename, exists)
 
-
-
-
-
-
-
-
+    if not exists:
+        print('No hits')
+        print('Remember - the string parameter is case sensitive')
