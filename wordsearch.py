@@ -2,7 +2,7 @@
 # Opens all files inside a folder and searches for any line that matches an input from user
 
 import os, sys
-
+os.system('') #enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
 
 def readfile(file, filename, exists):
     output = ''
