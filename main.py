@@ -5,7 +5,7 @@ import os
 
 
 print('Write the path to the directory:')
-path = '/home/morten/Dropbox/App/' #input()
+path = input()
 
 print('Type in the string you want to search for:')
 search = input()
