@@ -1,10 +1,10 @@
-# -*- mode: python ; coding: utf-8 -*-
+# -*- mode: python -*-
 
 block_cipher = None
 
 
 a = Analysis(['main.py'],
-             pathex=['/home/morten/PycharmProjects/WordSearch'],
+             pathex=['C:\\Users\\max\\Downloads\\wordsearch'],
              binaries=[],
              datas=[],
              hiddenimports=[],
