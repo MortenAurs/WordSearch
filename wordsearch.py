@@ -3,20 +3,24 @@
 
 import os, sys
 os.system('') #enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
+bold = '\033[1m'
+white = '\033[0m'
+blue = '\033[94m'
+
 
 def readfile(file, filename, exists):
     output = ''
     try:
+
         for line in file:
             if search in line:
                 exists = True
-                output += '     ' + line.strip() + '\n'
-        output = output.rstrip()
+                output = line.replace(search, bold + search + white)
+
+                print(blue + filename, ' ', white + output.strip())
+
     except:
         pass
-    if output != '':
-        print('\033[94m Directory: ' + filename+ '\033[0m')
-        print(output.replace(search, '\033[1m ' + search + '\033[0m'))
     return exists
 
 
@@ -25,18 +29,24 @@ if len(sys.argv) > 3:
 elif len(sys.argv) < 3:
     print('Too few arguments. "[filename.py] [search string] [path]"')
 else:
+
     search = sys.argv[1]
     path = sys.argv[2]
-    exists = False
-    for subdir, dirs, files in os.walk(path):
-        for file in files:
-            fullfilename = subdir + os.sep + file
-            try:
-                fileread = open(fullfilename, 'r')
-            except:
-                pass
-            exists = readfile(fileread, fullfilename, exists)
+    if os.path.exists(path):
+        exists = False
+        for subdir, dirs, files in os.walk(path):
+            for file in files:
+                fullfilename = subdir + os.sep + file
+                fileread = ''
+                try:
 
-    if not exists:
-        print('No hits')
-        print('Remember - the string parameter is case sensitive')
+                    fileread = open(fullfilename, 'r')
+                except:
+                    pass
+                exists = readfile(fileread, fullfilename, exists)
+
+        if not exists:
+            print('No hits')
+            print('Remember - the string parameter is case sensitive')
+    else:
+        print('Path does not exist')
